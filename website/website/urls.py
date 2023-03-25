@@ -20,4 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('blog.urls')),
     path('api-auth/', include('rest_framework.urls')),  # добавляем вход и выход посредствам rest_framework
+    path('api/v1/dj-rest-auth/', include('dj_rest_auth.urls')),     # адрес может быть любой
+    # добавляем регистрацию пользователей
+    path('api/v1/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 ]

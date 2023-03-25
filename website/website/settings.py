@@ -37,11 +37,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',     # для работы django-allauth
 
     'rest_framework',
+    'rest_framework.authtoken',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'dj_rest_auth',
+    'dj_rest_auth.registration',    # для работы django-allauth
 
     'blog.apps.BlogConfig',
 ]
+
+
+# настройки почты для подтверждения при регистрации пользователя через django-allauth
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'    # выводить письма в консоль
+SITE_ID = 1     # django-allauth использует фреймворк Django "sites", задаем настройки для него
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,5 +144,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',    # по умолчанию
+        'rest_framework.authentication.TokenAuthentication'     # переключаем на токены
+    ],
 }
