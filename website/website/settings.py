@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'dj_rest_auth.registration',    # для работы django-allauth
 
+    'drf_yasg',
+
     'blog.apps.BlogConfig',
 ]
 
