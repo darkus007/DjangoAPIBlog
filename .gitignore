@@ -1,0 +1,9 @@
+/venv
+/media
+.idea
+.DS_Store
+__pycache__
+setenv.sh
+*.log
+*.db
+*.sqlite3
