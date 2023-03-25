@@ -1,7 +1,8 @@
 from datetime import datetime
 
+from django.conf import settings
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from blog.models import Post
 
@@ -11,8 +12,14 @@ class PostTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.test_user = User.objects.create_user(username='test_user', password='abc123')
+        settings.SECRET_KEY = "some_secret_key!"
+        cls.test_user = get_user_model().objects.create_user(username='test_user', password='abc123')
         cls.test_post = Post.objects.create(author=cls.test_user, title='Blog title', body='Body content...')
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        super().tearDownClass()
+        settings.SECRET_KEY = None
 
     def test_blog_content(self):
         post = Post.objects.get(id=1)

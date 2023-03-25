@@ -5,10 +5,18 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
     """
     Читать могут все, вносить изменения только автор.
     """
+    def has_permission(self, request, view):
+        return bool(
+            request.method in permissions.SAFE_METHODS or
+            request.user and
+            request.user.is_authenticated
+        )
+
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return obj.author == request.user
+        return bool(
+            request.method in permissions.SAFE_METHODS or
+            obj.author == request.user
+        )
 
 
 class IsStaffOrReadOnly(permissions.BasePermission):
@@ -16,6 +24,13 @@ class IsStaffOrReadOnly(permissions.BasePermission):
     Читать могут все, вносить изменения только персонал сайта.
     """
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return bool(request.user and request.user.is_staff)
+        return bool(
+            request.method in permissions.SAFE_METHODS or
+            request.user and request.user.is_staff
+        )
+
+    def has_object_permission(self, request, view, obj):
+        return bool(
+            request.method in permissions.SAFE_METHODS or
+            request.user and request.user.is_staff
+        )
